@@ -37,7 +37,7 @@ allOf:
           type: number
           fits_keyword: DEC_DDC
           fits_hdu: Pointing
-        pa_aper:
+        position_angle:
           title: "[deg] Position angle of aperture used"
           type: number
           fits_keyword: PA_APER
