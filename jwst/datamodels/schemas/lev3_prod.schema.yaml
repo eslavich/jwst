@@ -10,7 +10,7 @@ properties:
           pointings:
             title: Number of pointings included in resampled product
             type: integer
-            fits_keyword:  NDRIZ
+            fits_keyword: NDRIZ
           product_exposure_time:
             title: Total exposure time for product
             type: number
@@ -18,7 +18,7 @@ properties:
           weight_type:
             title: Type of drizzle weighting to use in resampling input
             type: string
-            enum: ['exptime','error']
+            enum: [exptime, error]
             fits_keyword: WHT_TYPE
       tweakreg_catalog:
         type: object
