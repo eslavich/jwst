@@ -11,14 +11,6 @@ allOf:
       items:
         type: object
         properties:
-          name:
-            title: name
-            fits_keyword: aperture
-            fits_hdu: ps
-          shutters:
-            title: shutters
-            fits_keyword: shutters
-            fits_hdu: ps
           pointsource_data:
             title: Point source pathloss
             fits_hdu: ps
@@ -43,58 +35,4 @@ allOf:
             default: 0.0
             ndim: 1
             datatype: float32
-          pointsource_wcs:
-            type: object
-            properties:
-              crpix1:
-                title: crpix1
-                fits_keyword: crpix1
-                fits_hdu: ps
-              crpix2:
-                title: crpix2
-                fits_keyword: crpix2
-                fits_hdu: ps
-              crpix3:
-                title: crpix3
-                fits_keyword: crpix3
-                fits_hdu: ps
-              crval1:
-                title: crval1
-                fits_keyword: crval1
-                fits_hdu: ps
-              crval2:
-                title: crval2
-                fits_keyword: crval2
-                fits_hdu: ps
-              crval3:
-                title: crval3
-                fits_keyword: crval3
-                fits_hdu: ps
-              cdelt1:
-                title: cdelt1
-                fits_keyword: cdelt1
-                fits_hdu: ps
-              cdelt2:
-                title: cdelt2
-                fits_keyword: cdelt2
-                fits_hdu: ps
-              cdelt3:
-                title: cdelt3
-                fits_keyword: cdelt3
-                fits_hdu: ps
-          uniform_wcs:
-            type: object
-            properties:
-              crpix1:
-                title: crpix1
-                fits_keyword: crpix1
-                fits_hdu: uni
-              crval1:
-                title: crval1
-                fits_keyword: crval1
-                fits_hdu: uni
-              cdelt1:
-                title: cdelt1
-                fits_keyword: cdelt1
-                fits_hdu: uni
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema
