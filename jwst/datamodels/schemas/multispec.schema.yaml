@@ -110,7 +110,7 @@ allOf:
             fits_keyword: INT_NUM
             fits_hdu: EXTRACT1D
           time_scale:
-            # This title has changed to "principal time system for time-related keywords",
+            # 2019-06-12: This title has changed to "principal time system for time-related keywords",
             # but we don't want to update all the regression test data right now.
             title: "Time scale"
             type: string
