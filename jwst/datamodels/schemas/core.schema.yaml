@@ -909,7 +909,7 @@ properties:
             type: string
             enum: [2-POINT, 4-POINT, 5-POINT-SMALL-GRID, 9-POINT-SMALL-GRID,
               ALONG-SLIT-NOD, CYCLING, FULL, FULL-TIGHT, GAUSSIAN, INTRAMODULE,
-	      INTRASCA, MAPPING, NONE, REULEAUX, WFSC]
+              INTRASCA, MAPPING, NONE, REULEAUX, WFSC]
             fits_keyword: PATTTYPE
             blend_table: True
           position_number:
