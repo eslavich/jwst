@@ -1032,7 +1032,6 @@ properties:
             title: Sparse cycling dither points
             type: string
             enum: ['[6]', '[10]', '[3]']
-            default: 0
             fits_keyword: DITHPNTS
           primary_channel:
             title: MRS primary channel
