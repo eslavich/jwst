@@ -44,7 +44,7 @@ properties:
             fits_keyword: DFVAL
           drizzle_pixel_fraction:
             title: Drizzle pixel fraction used to create resampled product
-            type: float
+            type: number
             fits_keyword: DPIXFR
           drizzle_kernel:
             title: Drizzle kernel used to create resampled product

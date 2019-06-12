@@ -1419,7 +1419,7 @@ properties:
             blend_table: True
           gs_jitter_rms:
             title: RMS jitter over the exposure (arcsec).
-            type: float
+            type: number
             fits_keyword: JITTERMS
       ref_file:
         title: Reference file information
