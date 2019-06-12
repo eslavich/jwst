@@ -2192,6 +2192,10 @@ properties:
         title: Resampling parameter information
         type: object
         properties:
+          drizzle_weight_scale:
+            title: Drizzle weight scale used to created resampled product
+            type: string
+            fits_keyword: DWTSCL
           drizzle_output_units:
             title: Units for resampled output product
             type: string
@@ -2225,41 +2229,4 @@ properties:
             title: Extname of the WHT extension
             type: string
             fits_keyword: WHTEXT
-        drizzle_weight_scale:
-          title: Drizzle weight scale used to created resampled product
-          type: string
-          fits_keyword: DWTSCL
-        drizzle_output_units:
-          title: Units for resampled output product
-          type: string
-          enum: [counts, cps]
-          fits_keyword: DOUTUN
-        resample_bits:
-          title: Bit values to consider good when interpreting input DQ arrays
-          type: integer
-          fits_keyword: RESBITS
-        drizzle_fill_value:
-          title: Value used in pixels without any valid input data
-          type: string
-          fits_keyword: DFVAL
-        drizzle_pixel_fraction:
-          title: Drizzle pixel fraction used to create resampled product
-          type: float
-          fits_keyword: DPIXFR
-        drizzle_kernel:
-          title: Drizzle kernel used to create resampled product
-          type: string
-          fits_keyword: DKERN
-        product_data_extname:
-          title: Extname of the SCI extension
-          type: string
-          fits_keyword: SCIEXT
-        product_context_extname:
-          title: Extname of the CON extension
-          type: string
-          fits_keyword: CONEXT
-        product_weight_extname:
-          title: Extname of the WHT extension
-          type: string
-          fits_keyword: WHTEXT
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema
