@@ -565,7 +565,7 @@ properties:
               FGS_ACQ1, FGS_ACQ2, FGS_FINEGUIDE, FGS_ID-IMAGE, FGS_ID-STACK, FGS_TRACK,
               # MIRI
               MIR_4QPM, MIR_CORONCAL, MIR_DARKALL, MIR_DARKIMG, MIR_DARKMRS,
-              MIR_FLATALL, MIR_FLATIMAGE, MIR_FLATIMAGE-EXT, MIR_FLATMRS, MIR_FLATMRS-EXT,
+              MIR_FLATIMAGE, MIR_FLATMRS,
               MIR_IMAGE, MIR_LRS-FIXEDSLIT, MIR_LRS-SLITLESS, MIR_LYOT, MIR_MRS, MIR_TACQ,
               # NIRISS
               NIS_AMI, NIS_DARK, NIS_EXTCAL, NIS_FOCUS, NIS_IMAGE, NIS_LAMP,
@@ -576,7 +576,7 @@ properties:
               # NIRSpec
               NRS_AUTOFLAT, NRS_AUTOWAVE, NRS_BRIGHTOBJ, NRS_CONFIRM, NRS_DARK,
               NRS_FIXEDSLIT, NRS_FOCUS, NRS_IFU, NRS_IMAGE, NRS_LAMP, NRS_MIMF,
-              NRS_MSASPEC, NRS_MSATA, NRS_TACONFIRM, NRS_TACQ, NRS_TASLIT, NRS_WATA,
+              NRS_MSASPEC, NRS_TACONFIRM, NRS_TACQ, NRS_TASLIT,
               # Misc
               N/A, ANY]
             fits_keyword: EXP_TYPE
@@ -610,7 +610,7 @@ properties:
               FGS, FGS60, FGS8370, FGS840, FGSRAPID, FINEGUIDE,
               ID, MEDIUM2, MEDIUM8, NIS, NISRAPID,
               NRS, NRSIRS2, NRSN16R4, NRSN32R8, NRSN8R2,
-              NRSRAPID, NRSIRS2RAPID, NRSRAPIDD1, NRSRAPIDD2, NRSRAPIDD6,
+              NRSRAPID, NRSIRS2RAPID,
               NRSSLOW, RAPID, SHALLOW2, SHALLOW4, SLOW, TRACK, ANY, N/A]
             fits_keyword: READPATT
             blend_table: True
@@ -907,12 +907,9 @@ properties:
           primary_type:
             title: Primary dither pattern type
             type: string
-            enum: [2-POINT, 2-POINT-NOD, 3-POINT-NOD,
-              4-POINT, 4-POINT-NOD, 4-POINT-DITHER, 4-POINT-SETS,
-              5-POINT-NOD, 5-POINT-SMALL-GRID, 9-POINT-SMALL-GRID,
-              ALONG-SLIT-NOD, CYCLING, EXTENDED-SOURCE, FULL, FULL-TIGHT,
-              GAUSSIAN, INTRAMODULE, INTRASCA, MAPPING, NONE, POINT-SOURCE,
-              REULEAUX, SPARSE-CYCLING, WFSC]
+            enum: [2-POINT, 4-POINT, 5-POINT-SMALL-GRID, 9-POINT-SMALL-GRID,
+              ALONG-SLIT-NOD, CYCLING, FULL, FULL-TIGHT, GAUSSIAN, INTRAMODULE,
+	      INTRASCA, MAPPING, NONE, REULEAUX, WFSC]
             fits_keyword: PATTTYPE
             blend_table: True
           position_number:
@@ -920,7 +917,7 @@ properties:
             type: integer
             fits_keyword: PATT_NUM
             blend_table: True
-          starting_point:
+          pattern_start:
             title: Starting point in pattern
             type: integer
             fits_keyword: PATTSTRT
@@ -950,7 +947,7 @@ properties:
             type: integer
             fits_keyword: SUBPXPNS
             blend_table: True
-          subpixel_dither_pattern:
+          subpixel_pattern_type:
             title: subpixel dither pattern
             type: string
             fits_keyword: SUBPXPAT
@@ -1010,6 +1007,44 @@ properties:
             type: number
             fits_keyword: YOFFSET
             blend_table: True
+          starting_set:
+            title: Starting 4-point set number
+            type: int
+            enum: [1, 3, 5, NULL]
+            default: 0
+            fits_keyword: DSETSTRT
+          number_of_sets:
+            title: Total number of 4-point sets
+            type: int
+            enum: [1-10, NULL]
+            default: 0
+            fits_keyword: NUMDSETS
+          direction:
+            title: Direction of dither pattern offsets
+            type: string
+            default: 0
+            fits_keyword: DITHDIRC
+          optimized_for:
+            title: Dither pattern optimization
+            type: string
+            default: 0
+            fits_keyword: DITHOPFR
+          sparse_points:
+            title: Sparse cycling dither points
+            type: string
+            enum: [[6], [10], [3], NULL]
+            default: 0
+            fits_keyword: DITHPNTS
+          primary_channel:
+            title: MRS primary channel
+            type: string
+            enum: [ALL, CHANNEL1, CHANNEL2, CHANNEL3, CHANNEL4]
+            fits_keyword: MRSPRCHN
+          dither_points:
+            title: Total number of points in primary dither pattern
+            type: string
+            default: 0
+            fits_keyword: NDITHPTS
       ephemeris:
         title: JWST ephemeris information
         type: object
@@ -1385,6 +1420,10 @@ properties:
             type: string
             fits_keyword: GS_SRCKM
             blend_table: True
+          gs_jitter_rms:
+            title: RMS jitter over the exposure (arcsec).
+            type: float
+            fits_keyword: JITTERMS
       ref_file:
         title: Reference file information
         type: object
@@ -2149,4 +2188,78 @@ properties:
             title: Master background file used
             type: string
             fits_keyword: MASTERBG
+      resample:
+        title: Resampling parameter information
+        type: object
+        properties:
+          drizzle_output_units:
+            title: Units for resampled output product
+            type: string
+            enum: [counts, cps]
+            fits_keyword: DOUTUN
+          resample_bits:
+            title: Bit values to consider good when interpreting input DQ arrays
+            type: integer
+            fits_keyword: RESBITS
+          drizzle_fill_value:
+            title: Value used in pixels without any valid input data
+            type: string
+            fits_keyword: DFVAL
+          drizzle_pixel_fraction:
+            title: Drizzle pixel fraction used to create resampled product
+            type: float
+            fits_keyword: DPIXFR
+          drizzle_kernel:
+            title: Drizzle kernel used to create resampled product
+            type: string
+            fits_keyword: DKERN
+          product_data_extname:
+            title: Extname of the SCI extension
+            type: string
+            fits_keyword: SCIEXT
+          product_context_extname:
+            title: Extname of the CON extension
+            type: string
+            fits_keyword: CONEXT
+          product_weight_extname:
+            title: Extname of the WHT extension
+            type: string
+            fits_keyword: WHTEXT
+        drizzle_weight_scale:
+          title: Drizzle weight scale used to created resampled product
+          type: string
+          fits_keyword: DWTSCL
+        drizzle_output_units:
+          title: Units for resampled output product
+          type: string
+          enum: [counts, cps]
+          fits_keyword: DOUTUN
+        resample_bits:
+          title: Bit values to consider good when interpreting input DQ arrays
+          type: integer
+          fits_keyword: RESBITS
+        drizzle_fill_value:
+          title: Value used in pixels without any valid input data
+          type: string
+          fits_keyword: DFVAL
+        drizzle_pixel_fraction:
+          title: Drizzle pixel fraction used to create resampled product
+          type: float
+          fits_keyword: DPIXFR
+        drizzle_kernel:
+          title: Drizzle kernel used to create resampled product
+          type: string
+          fits_keyword: DKERN
+        product_data_extname:
+          title: Extname of the SCI extension
+          type: string
+          fits_keyword: SCIEXT
+        product_context_extname:
+          title: Extname of the CON extension
+          type: string
+          fits_keyword: CONEXT
+        product_weight_extname:
+          title: Extname of the WHT extension
+          type: string
+          fits_keyword: WHTEXT
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema
