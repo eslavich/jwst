@@ -309,6 +309,7 @@ def gentle_asarray(a, dtype):
     out_dtype = np.dtype(dtype)
     if isinstance(a, np.ndarray):
         in_dtype = a.dtype
+
         # Non-table array
         if in_dtype.fields is None and out_dtype.fields is None:
             if np.can_cast(in_dtype, out_dtype, 'equiv'):
@@ -316,6 +317,12 @@ def gentle_asarray(a, dtype):
             else:
                 return np.asanyarray(a, dtype=out_dtype)
         elif in_dtype.fields is not None and out_dtype.fields is not None:
+            if isinstance(a, fits.fitsrec.FITS_rec):
+                new_in_dtype = []
+                for i, field in enumerate(in_dtype.fields):
+                    new_in_dtype.append((str(field), a.field(i).dtype))
+                in_dtype = np.dtype(new_in_dtype)
+
             if in_dtype == out_dtype:
                 return a
             in_names = {n.lower() for n in in_dtype.names}
