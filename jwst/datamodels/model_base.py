@@ -10,6 +10,9 @@ import warnings
 
 import numpy as np
 
+import boto3
+from io import BytesIO
+
 from astropy.io import fits
 from astropy.time import Time
 from astropy.wcs import WCS
@@ -146,7 +149,10 @@ class DataModel(properties.ObjectNode, ndmodel.NDModel):
             file_type = filetype.check(init)
 
             if file_type == "fits":
-                hdulist = fits.open(init)
+                if init.startswith("s3://"):
+                    hdulist = fits.open(self._read_s3_bytes(init))
+                else:
+                    hdulist = fits.open(init)
                 asdffile = fits_support.from_fits(hdulist,
                                               self._schema,
                                               self._ctx,
@@ -154,8 +160,10 @@ class DataModel(properties.ObjectNode, ndmodel.NDModel):
                 self._files_to_close.append(hdulist)
 
             elif file_type == "asdf":
-                asdffile = self.open_asdf(init=init, **kwargs)
-
+                if init.startswith("s3://"):
+                    asdffile = self.open_asdf(init=self._read_s3_bytes(init), **kwargs)
+                else:
+                    asdffile = self.open_asdf(init=init, **kwargs)
             else:
                 # TODO handle json files as well
                 raise IOError(
@@ -219,6 +227,12 @@ class DataModel(properties.ObjectNode, ndmodel.NDModel):
                 if 'datatype' in subschema:
                     setattr(self, attr, value)
 
+    def _read_s3_bytes(self, s3_url):
+        assert s3_url.startswith("s3://")
+        bucket_name, key = s3_url.replace("s3://", "").split("/", 1)
+        resource = boto3.resource("s3")
+        obj = resource.Object(bucket_name, key)
+        return BytesIO(obj.get()["Body"].read())
 
     def __repr__(self):
         import re

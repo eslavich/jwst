@@ -33,10 +33,12 @@ and provide results in the forms required by STPIPE.
 """
 
 import re
+import os
 
 import crds
 from crds.core import config, exceptions, heavy_client, log
 from crds.core import crds_cache_locking
+import boto3
 
 # This is really a testing and debug convenience function, and notably now
 # the only place in this module that a direct import of datamodels occurs
@@ -114,9 +116,16 @@ def check_reference_open(refpath):
 
     Ignore reference path values of "N/A" or "" for checking.
     """
-    if refpath != "N/A" and refpath.strip() != "":
-        opened = open(refpath, "rb")
-        opened.close()
+    if os.environ.get("CRDS_S3_ENABLED"):
+        assert refpath.startswith("s3://")
+        s3 = boto3.resource("s3")
+        bucket_name, key = refpath.replace("s3://", "").split("/", 1)
+        s3.Object(bucket_name, key).load()
+        return refpath
+    else:
+        if refpath != "N/A" and refpath.strip() != "":
+            opened = open(refpath, "rb")
+            opened.close()
     return refpath
 
 
