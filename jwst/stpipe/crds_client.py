@@ -117,15 +117,16 @@ def check_reference_open(refpath):
     Ignore reference path values of "N/A" or "" for checking.
     """
     if os.environ.get("CRDS_S3_ENABLED"):
-        assert refpath.startswith("s3://")
-        s3 = boto3.resource("s3")
-        bucket_name, key = refpath.replace("s3://", "").split("/", 1)
-        s3.Object(bucket_name, key).load()
-        return refpath
+        if refpath != "N/A" and refpath.strip() != "":
+            assert refpath.startswith("s3://")
+            s3 = boto3.resource("s3")
+            bucket_name, key = refpath.replace("s3://", "").split("/", 1)
+            s3.Object(bucket_name, key).load()
     else:
         if refpath != "N/A" and refpath.strip() != "":
             opened = open(refpath, "rb")
             opened.close()
+
     return refpath
 
 
