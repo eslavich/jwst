@@ -7,6 +7,15 @@ from numpy.testing import assert_allclose
 import pytest
 
 from .. import Step, Pipeline, LinearPipeline
+
+from .steps import WithDefaultsStep
+
+from jwst.stpipe import crds_client
+from jwst.extern.configobj.configobj import ConfigObj
+from jwst import datamodels
+
+from crds.core.exceptions import CrdsLookupError
+
 # TODO: Test system call steps
 
 
@@ -102,6 +111,27 @@ class MyPipeline(Pipeline):
         dm = datamodels.ImageModel(combined)
         dm.save(self.output_filename)
         return dm
+
+
+class WithDefaultsPipeline(Pipeline):
+    """A test pipeline that includes the WithDefaultsStep"""
+
+    step_defs = {
+        "step_1": WithDefaultsStep,
+        "step_2": WithDefaultsStep
+    }
+
+    spec = """
+        pipeline_par1 = string(default='default pipeline_par1 value')
+        pipeline_par2 = string(default='default pipeline_par2 value')
+        pipeline_par3 = string(default='default pipeline_par3 value')
+        pipeline_par4 = string(default='default pipeline_par4 value')
+    """
+
+    def process(self, input):
+        input = self.step_1(input)
+        input = self.step_2(input)
+        return input
 
 
 def test_pipeline():
@@ -214,3 +244,209 @@ def test_pipeline_commandline_invalid_args():
 
     help = buffer.getvalue()
     assert "Multiply by this number" in help
+
+
+@pytest.mark.parametrize(
+    "command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars, expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars",
+    [
+        # If nothing else is present, we should use the spec defaults
+        (
+            None,
+            None,
+            None,
+            None,
+            {"pipeline_par1": "default pipeline_par1 value"},
+            {"par1": "default par1 value"},
+            {"par1": "default par1 value"}
+        ),
+        # Step reference file pars > spec defaults
+        (
+            None,
+            None,
+            None,
+            {"par1": "step reference par1 value"},
+            {"pipeline_par1": "default pipeline_par1 value"},
+            {"par1": "step reference par1 value"},
+            {"par1": "step reference par1 value"}
+        ),
+        # Pipeline reference file pars > step reference file pars
+        (
+            None,
+            None,
+            {
+                "pipeline_par1": "pipeline reference pipeline_par1 value",
+                "step_1": {"par1": "pipeline reference step_1 par1 value"},
+                "step_2": {"par1": "pipeline reference step_2 par1 value"}
+            },
+            {"par1": "step reference par1 value"},
+            {"pipeline_par1": "pipeline reference pipeline_par1 value"},
+            {"par1": "pipeline reference step_1 par1 value"},
+            {"par1": "pipeline reference step_2 par1 value"}
+        ),
+        # Command line config pars > pipeline reference pars
+        (
+            None,
+            {
+                "pipeline_par1": "config pipeline_par1 value",
+                "step_1": {"par1": "config step_1 par1 value"},
+                "step_2": {"par1": "config step_2 par1 value"}
+            },
+            {
+                "pipeline_par1": "pipeline reference pipeline_par1 value",
+                "step_1": {"par1": "pipeline reference step_1 par1 value"},
+                "step_2": {"par1": "pipeline reference step_2 par1 value"}
+            },
+            {"par1": "step reference par1 value"},
+            {"pipeline_par1": "config pipeline_par1 value"},
+            {"par1": "config step_1 par1 value"},
+            {"par1": "config step_2 par1 value"}
+        ),
+        # Command line override pars > all other pars
+        (
+            {
+                "pipeline_par1": "override pipeline_par1 value",
+                "step_1": {"par1": "override step_1 par1 value"},
+                "step_2": {"par1": "override step_2 par1 value"}
+            },
+            {
+                "pipeline_par1": "config pipeline_par1 value",
+                "step_1": {"par1": "config step_1 par1 value"},
+                "step_2": {"par1": "config step_2 par1 value"}
+            },
+            {
+                "pipeline_par1": "pipeline reference pipeline_par1 value",
+                "step_1": {"par1": "pipeline reference step_1 par1 value"},
+                "step_2": {"par1": "pipeline reference step_2 par1 value"}
+            },
+            {"par1": "step reference par1 value"},
+            {"pipeline_par1": "override pipeline_par1 value"},
+            {"par1": "override step_1 par1 value"},
+            {"par1": "override step_2 par1 value"},
+        ),
+        # Test complex merging of parameters
+        (
+            {
+                "pipeline_par1": "override pipeline_par1 value",
+                "step_1": {"par1": "override step_1 par1 value"},
+                "step_2": {"par1": "override step_2 par1 value"}
+            },
+            {
+                "pipeline_par2": "config pipeline_par2 value",
+                "step_1": {"par2": "config step_1 par2 value"},
+                "step_2": {"par2": "config step_2 par2 value"}
+            },
+            {
+                "pipeline_par3": "pipeline reference pipeline_par3 value",
+                "step_1": {"par3": "pipeline reference step_1 par3 value"},
+                "step_2": {"par3": "pipeline reference step_2 par3 value"}
+            },
+            {"par4": "step reference par4 value"},
+            {
+                "pipeline_par1": "override pipeline_par1 value",
+                "pipeline_par2": "config pipeline_par2 value",
+                "pipeline_par3": "pipeline reference pipeline_par3 value",
+                "pipeline_par4": "default pipeline_par4 value"
+            },
+            {
+                "par1": "override step_1 par1 value",
+                "par2": "config step_1 par2 value",
+                "par3": "pipeline reference step_1 par3 value",
+                "par4": "step reference par4 value",
+                "par5": "default par5 value"
+            },
+            {
+                "par1": "override step_2 par1 value",
+                "par2": "config step_2 par2 value",
+                "par3": "pipeline reference step_2 par3 value",
+                "par4": "step reference par4 value",
+                "par5": "default par5 value"
+            }
+        )
+    ]
+)
+def test_pipeline_commandline_par_precedence(command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars, expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars, tmp_path, monkeypatch):
+    args = []
+
+    pipeline_class_name = "jwst.stpipe.tests.test_pipeline.WithDefaultsPipeline"
+    pipeline_config_name = "WithDefaultsPipeline"
+    pipeline_reference_type = f"pars-{pipeline_config_name.lower()}"
+    step_class_name = "jwst.stpipe.tests.steps.WithDefaultsStep"
+    step_config_name = "WithDefaultsStep"
+    step_reference_type = "pars-withdefaultsstep"
+    input_path = join(dirname(__file__), "data", "science.fits")
+
+    if command_line_config_pars:
+        command_line_config_path = tmp_path/"with_defaults_pipeline.cfg"
+        config = ConfigObj(str(command_line_config_path))
+        config["class"] = pipeline_class_name
+        config["name"] = pipeline_config_name
+        config["steps"] = {}
+        for key, value in command_line_config_pars.items():
+            if isinstance(value, dict):
+                config["steps"][key] = value
+            else:
+                config[key] = value
+        config.write()
+        args.append(str(command_line_config_path.absolute()))
+    else:
+        args.append(pipeline_class_name)
+
+    args.append(input_path)
+
+    if command_line_pars:
+        for key, value in command_line_pars.items():
+            if isinstance(value, dict):
+                for sub_key, sub_value in value.items():
+                    args.append(f"--steps.{key}.{sub_key}={sub_value}")
+            else:
+                args.append(f"--{key}={value}")
+
+    reference_file_map = {}
+    for reference_pars, reference_type, class_name, config_name in [
+        (
+            pipeline_reference_pars,
+            pipeline_reference_type,
+            pipeline_class_name,
+            pipeline_config_name
+        ),
+        (
+            step_reference_pars,
+            step_reference_type,
+            step_class_name,
+            step_config_name
+        )
+    ]:
+        if reference_pars:
+            reference_path = tmp_path/f"{reference_type}.asdf"
+            parameters = {
+                "class": class_name,
+                "name": config_name,
+                "steps": {}
+            }
+            for key, value in reference_pars.items():
+                if isinstance(value, dict):
+                    parameters["steps"][key] = value
+                else:
+                    parameters[key] = value
+            model = datamodels.StepParsModel({"parameters": parameters})
+            model.save(reference_path)
+
+            reference_file_map[reference_type] = str(reference_path)
+
+    def mock_get_reference_file(dataset, reference_file_type, observatory=None):
+        if reference_file_type in reference_file_map:
+            return reference_file_map[reference_file_type]
+        else:
+            raise CrdsLookupError(f"Error determining best reference for '{reference_file_type}'  =   Unknown reference type '{reference_file_type}'")
+    monkeypatch.setattr(crds_client, "get_reference_file", mock_get_reference_file)
+
+    pipeline = Step.from_cmdline(args)
+
+    for key, value in expected_pipeline_pars.items():
+        assert getattr(pipeline, key) == value
+
+    for key, value in expected_step_1_pars.items():
+        assert getattr(pipeline.step_1, key) == value
+
+    for key, value in expected_step_2_pars.items():
+        assert getattr(pipeline.step_2, key) == value

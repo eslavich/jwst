@@ -42,6 +42,7 @@ class WithDefaultsStep(Step):
     par2 = string(default='default par2 value')
     par3 = string(default='default par3 value')
     par4 = string(default='default par4 value')
+    par5 = string(default='default par5 value')
     """
 
     def process(self, input):

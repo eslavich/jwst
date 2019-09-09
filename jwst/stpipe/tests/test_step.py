@@ -270,41 +270,34 @@ def test_step_from_commandline_invalid4():
             None,
             None,
             None,
-            {"par1": "default par1 value", "par2": "default par2 value", "par3": "default par3 value", "par4": "default par4 value"}
+            {"par1": "default par1 value"}
         ),
         # Reference file pars > spec defaults
         (
             None,
             None,
-            {"par1": "reference par1 value", "par2": "reference par2 value", "par3": "reference par3 value", "par4": "reference par4 value"},
-            {"par1": "reference par1 value", "par2": "reference par2 value", "par3": "reference par3 value", "par4": "reference par4 value"}
+            {"par1": "reference par1 value"},
+            {"par1": "reference par1 value"}
         ),
         # Command line config pars > reference pars
         (
             None,
-            {"par1": "config par1 value", "par2": "config par2 value", "par3": "config par3 value", "par4": "config par4 value"},
-            {"par1": "reference par1 value", "par2": "reference par2 value", "par3": "reference par3 value", "par4": "reference par4 value"},
-            {"par1": "config par1 value", "par2": "config par2 value", "par3": "config par3 value", "par4": "config par4 value"}
+            {"par1": "config par1 value"},
+            {"par1": "reference par1 value"},
+            {"par1": "config par1 value"}
         ),
         # Command line override pars > all other pars
         (
-            {"par1": "override par1 value", "par2": "override par2 value", "par3": "override par3 value", "par4": "override par4 value"},
-            {"par1": "config par1 value", "par2": "config par2 value", "par3": "config par3 value", "par4": "config par4 value"},
-            {"par1": "reference par1 value", "par2": "reference par2 value", "par3": "reference par3 value", "par4": "reference par4 value"},
-            {"par1": "override par1 value", "par2": "override par2 value", "par3": "override par3 value", "par4": "override par4 value"}
+            {"par1": "override par1 value"},
+            {"par1": "config par1 value"},
+            {"par1": "reference par1 value"},
+            {"par1": "override par1 value"}
         ),
-        # Test complex merging of parameters (one parameter per source)
+        # Test complex merging of parameters
         (
             {"par1": "override par1 value"},
             {"par2": "config par2 value"},
             {"par3": "reference par3 value"},
-            {"par1": "override par1 value", "par2": "config par2 value", "par3": "reference par3 value", "par4": "default par4 value"}
-        ),
-        # Test complex merging of parameters (more parameters specified on the lower-precedence sources)
-        (
-            {"par1": "override par1 value"},
-            {"par1": "config par1 value", "par2": "config par2 value"},
-            {"par1": "reference par1 value", "par2": "reference par2 value", "par3": "reference par3 value"},
             {"par1": "override par1 value", "par2": "config par2 value", "par3": "reference par3 value", "par4": "default par4 value"}
         ),
     ]
