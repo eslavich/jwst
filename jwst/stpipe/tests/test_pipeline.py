@@ -248,7 +248,8 @@ def test_pipeline_commandline_invalid_args():
 
 @pytest.mark.xfail(reason="Pipeline reference files aren't fully implemented")
 @pytest.mark.parametrize(
-    "command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars, expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars",
+    "command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars, \
+expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars",
     [
         # If nothing else is present, we should use the spec defaults
         (
@@ -365,7 +366,10 @@ def test_pipeline_commandline_invalid_args():
         )
     ]
 )
-def test_pipeline_commandline_par_precedence(command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars, expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars, tmp_path, monkeypatch):
+def test_pipeline_commandline_par_precedence(
+    command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars,
+    expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars, tmp_path, monkeypatch
+):
     args = []
 
     pipeline_class_name = "jwst.stpipe.tests.test_pipeline.WithDefaultsPipeline"
@@ -439,7 +443,9 @@ def test_pipeline_commandline_par_precedence(command_line_pars, command_line_con
         if reference_file_type in reference_file_map:
             return reference_file_map[reference_file_type]
         else:
-            raise CrdsLookupError(f"Error determining best reference for '{reference_file_type}'  =   Unknown reference type '{reference_file_type}'")
+
+            raise CrdsLookupError(f"Error determining best reference for '{reference_file_type}'  = \
+  Unknown reference type '{reference_file_type}'")
     monkeypatch.setattr(crds_client, "get_reference_file", mock_get_reference_file)
 
     pipeline = Step.from_cmdline(args)
