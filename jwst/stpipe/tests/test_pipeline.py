@@ -246,6 +246,7 @@ def test_pipeline_commandline_invalid_args():
     assert "Multiply by this number" in help
 
 
+@pytest.mark.xfail(reason="Pipeline reference files aren't fully implemented")
 @pytest.mark.parametrize(
     "command_line_pars, command_line_config_pars, pipeline_reference_pars, step_reference_pars, expected_pipeline_pars, expected_step_1_pars, expected_step_2_pars",
     [
@@ -421,10 +422,11 @@ def test_pipeline_commandline_par_precedence(command_line_pars, command_line_con
             parameters = {
                 "class": class_name,
                 "name": config_name,
-                "steps": {}
             }
             for key, value in reference_pars.items():
                 if isinstance(value, dict):
+                    if "steps" not in parameters:
+                        parameters["steps"] = {}
                     parameters["steps"][key] = value
                 else:
                     parameters[key] = value
