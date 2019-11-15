@@ -7,6 +7,7 @@ import datetime
 import os
 import sys
 import warnings
+from io import BytesIO
 
 import numpy as np
 
@@ -577,7 +578,13 @@ class DataModel(properties.ObjectNode, ndmodel.NDModel):
         """
         self.on_save(init)
         asdffile = self.open_asdf(self._instance, **kwargs)
-        asdffile.write_to(init, *args, **kwargs)
+        if isinstance(init, str) and s3_utils.is_s3_uri(init):
+            content = BytesIO()
+            asdffile.write_to(content, *args, **kwargs)
+            content.seek(0)
+            s3_utils.put_object(init, content)
+        else:
+            asdffile.write_to(init, *args, **kwargs)
 
     @classmethod
     def from_fits(cls, init, schema=None, **kwargs):
@@ -622,10 +629,19 @@ class DataModel(properties.ObjectNode, ndmodel.NDModel):
         with fits_support.to_fits(self._instance, self._schema) as ff:
             with warnings.catch_warnings():
                 warnings.filterwarnings('ignore', message='Card is too long')
-                if self._no_asdf_extension:
-                    ff._hdulist.writeto(init, *args, **kwargs)
+                if isinstance(init, str) and s3_utils.is_s3_uri(init):
+                    content = BytesIO()
+                    if self._no_asdf_extension:
+                        ff._hdulist.writeto(content, *args, **kwargs)
+                    else:
+                        ff.write_to(content, *args, **kwargs)
+                    content.seek(0)
+                    s3_utils.put_object(init, content)
                 else:
-                    ff.write_to(init, *args, **kwargs)
+                    if self._no_asdf_extension:
+                        ff._hdulist.writeto(init, *args, **kwargs)
+                    else:
+                        ff.write_to(init, *args, **kwargs)
 
     @property
     def shape(self):

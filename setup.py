@@ -54,7 +54,8 @@ TESTS_REQUIRE = [
     'codecov',
 ]
 AWS_REQUIRE = [
-    'stsci-aws-utils @ git+https://github.com/spacetelescope/stsci-aws-utils@0.1.1'
+    'stsci-aws-utils @ git+https://github.com/spacetelescope/stsci-aws-utils@0.1.1',
+    'boto3==1.10.18',
 ]
 ENTRY_POINTS = dict(asdf_extensions=['jwst_pipeline = jwst.transforms.jwextension:JWSTExtension',
                                      'jwst_datamodel = jwst.datamodels.extension:DataModelExtension'])

@@ -48,6 +48,23 @@ def get_object(uri):
     return get_client().get_object(bucket_name, key)
 
 
+def put_object(uri, content):
+    """
+    Put an object into S3.
+
+    Parameters
+    ----------
+    uri: str
+        S3 URI (s3://bucket-name/some/key)
+    content: io.BytesIO
+        Object content
+    """
+    bucket_name, key = split_uri(uri)
+    import boto3
+    client = boto3.client("s3")
+    client.put_object(Bucket=bucket_name, Key=key, Body=content)
+
+
 def get_client():
     """
     Get the shared instance of ConcurrentS3Client.
