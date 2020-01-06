@@ -1,9 +1,9 @@
 title: NirSpec Disperser reference file model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_exptype.schema.yaml
-- $ref: keyword_grating.schema.yaml
-- $ref: keyword_pgrating.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_grating.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pgrating.schema
 - type: object
   properties:
     groovedensity:

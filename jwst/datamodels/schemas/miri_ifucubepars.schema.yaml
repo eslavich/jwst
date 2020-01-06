@@ -1,6 +1,6 @@
 title: Default MIRI IFU cube parameters data model
 allOf:
-- $ref: ifucubepars.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/ifucubepars.schema
 - type: object
   properties:
     ifucubepars_table:

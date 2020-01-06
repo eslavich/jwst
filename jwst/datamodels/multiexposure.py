@@ -43,8 +43,8 @@ class MultiExposureModel(DataModel):
 
     exposures.items.area : numpy float32 array
     """
-    schema_url = "http://stsci.edu/schemas/jwst_datamodel/multiexposure.schema"
-    core_schema_url = 'http://stsci.edu/schemas/jwst_datamodel/core.schema'
+    schema_uri = "http://stsci.edu/schemas/jwst_datamodel/multiexposure.schema"
+    core_schema_uri = "http://stsci.edu/schemas/jwst_datamodel/core.schema"
 
     def __init__(self, init=None, **kwargs):
 
@@ -81,12 +81,12 @@ class MultiExposureModel(DataModel):
         """Build the schema, encorporating the core."""
         # Get the schemas
         schema = asdf_schema.load_schema(
-            self.schema_url,
+            self.schema_uri,
             resolver=AsdfFile().resolver,
             resolve_references=True
         )
         core_schema = asdf_schema.load_schema(
-            self.core_schema_url,
+            self.core_schema_uri,
             resolver=AsdfFile().resolver,
             resolve_references=True
         )

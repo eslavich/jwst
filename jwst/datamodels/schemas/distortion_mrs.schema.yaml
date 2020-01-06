@@ -1,9 +1,9 @@
 title: Distortion data model for MIRI MRS reference data
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_band.schema.yaml
-- $ref: keyword_channel.schema.yaml
-- $ref: keyword_exptype.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_band.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_channel.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
 - type: object
   properties:
     slices:

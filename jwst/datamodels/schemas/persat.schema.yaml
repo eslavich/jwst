@@ -1,7 +1,7 @@
 title: Persistence saturation threshold
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: subarray.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
 - type: object
   properties:
     data:
@@ -15,5 +15,5 @@ allOf:
       fits_hdu: DQ
       default: 0
       datatype: uint32
-- $ref: dq_def.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/dq_def.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

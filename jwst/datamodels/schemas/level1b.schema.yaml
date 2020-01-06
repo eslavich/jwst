@@ -1,8 +1,8 @@
 allOf:
-- $ref: core.schema.yaml
-- $ref: bunit.schema.yaml
-- $ref: photometry.schema.yaml
-- $ref: wcsinfo.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/bunit.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/photometry.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
 - type: object
   properties:
     data:
@@ -23,6 +23,6 @@ allOf:
       default: 0.0
       ndim: 4
       datatype: uint16
-- $ref: group.schema.yaml
-- $ref: int_times.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/group.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/int_times.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

@@ -1,9 +1,9 @@
 title: Coronagraphic PSF mask data model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_filter.schema.yaml
-- $ref: keyword_coronmsk.schema.yaml
-- $ref: subarray.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_filter.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_coronmsk.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
 - type: object
   properties:
     data:

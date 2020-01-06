@@ -1,5 +1,5 @@
 allOf:
-- $ref: core.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
 - type: object
   properties:
     exposures:
@@ -7,7 +7,7 @@ allOf:
       title: An array of slits
       items:
         allOf:
-        - $ref: slitdata.schema.yaml
+        - $ref: http://stsci.edu/schemas/jwst_datamodel/slitdata.schema
         - type: object
           properties:
             meta:

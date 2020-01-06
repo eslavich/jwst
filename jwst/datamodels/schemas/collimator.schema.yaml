@@ -1,8 +1,8 @@
 title: NirSpec COLLIMATOR reference file model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_exptype.schema.yaml
-- $ref: keyword_pexptype.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pexptype.schema
 - type: object
   properties:
     model:

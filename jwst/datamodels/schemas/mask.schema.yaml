@@ -1,7 +1,7 @@
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: subarray.schema.yaml
-- $ref: keyword_preadpatt.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_preadpatt.schema
 - type: object
   properties:
     dq:
@@ -10,5 +10,5 @@ allOf:
       default: 0
       ndim: 2
       datatype: uint32
-- $ref: dq_def.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/dq_def.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

@@ -1,9 +1,9 @@
 title: NIRSpec MOS and IFU photometric flux conversion data model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_exptype.schema.yaml
-- $ref: keyword_pexptype.schema.yaml
-- $ref: keyword_pixelarea.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pexptype.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pixelarea.schema
 - type: object
   properties:
     phot_table:

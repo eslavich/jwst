@@ -12,14 +12,14 @@ class IFUCubeParsModel(ReferenceFileModel):
     ifucubepars_table : numpy table
          IFU Cube default parameters table
     """
-    schema_url = "ifucubepars.schema"
+    schema_uri = "http://stsci.edu/schemas/jwst_datamodel/ifucubepars.schema"
 
 
 class NirspecIFUCubeParsModel(ReferenceFileModel):
     """
     A data model for Nirspec ifucubepars reference files.
     """
-    schema_url = "nirspec_ifucubepars.schema"
+    schema_uri = "http://stsci.edu/schemas/jwst_datamodel/nirspec_ifucubepars.schema"
 
 
 class MiriIFUCubeParsModel(ReferenceFileModel):
@@ -43,4 +43,4 @@ class MiriIFUCubeParsModel(ReferenceFileModel):
     ifucubepars_high_wavetable : numpy table
          default IFU cube high resolution wavetable
     """
-    schema_url = "miri_ifucubepars.schema"
+    schema_uri = "http://stsci.edu/schemas/jwst_datamodel/miri_ifucubepars.schema"

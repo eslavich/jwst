@@ -1,9 +1,9 @@
 title: SPECWCS_NIRCAM_GRISM reference file model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_module.schema.yaml
-- $ref: keyword_pupil.schema.yaml
-- $ref: keyword_exptype.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_module.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pupil.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
 - type: object
   properties:
     displ:

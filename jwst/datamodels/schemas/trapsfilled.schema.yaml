@@ -1,8 +1,8 @@
 title: Traps-filled map
 allOf:
-- $ref: core.schema.yaml
-- $ref: wcsinfo.schema.yaml
-- $ref: subarray.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
 - type: object
   properties:
     data:

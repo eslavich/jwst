@@ -26,8 +26,8 @@ definitions:
         type: number
         title: Aperture or pitch width [in m]
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_exptype.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
 - type: object
   properties:
     apertures:

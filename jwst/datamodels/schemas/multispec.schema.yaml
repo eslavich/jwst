@@ -1,6 +1,6 @@
 allOf:
-- $ref: core.schema.yaml
-- $ref: int_times.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/int_times.schema
 - type: object
   properties:
     spec:

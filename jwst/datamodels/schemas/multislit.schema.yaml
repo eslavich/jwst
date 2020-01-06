@@ -1,5 +1,5 @@
 allOf:
-- $ref: core.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
 - type: object
   properties:
     slits:
@@ -8,5 +8,5 @@ allOf:
       description: |
         An array of SlitModel instances. All slits come from the same exposure.
       items:
-        $ref: slitdata.schema.yaml
+        $ref: http://stsci.edu/schemas/jwst_datamodel/slitdata.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

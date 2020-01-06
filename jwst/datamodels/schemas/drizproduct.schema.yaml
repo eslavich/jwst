@@ -1,8 +1,8 @@
 allOf:
-- $ref: core.schema.yaml
-- $ref: lev3_prod.schema.yaml
-- $ref: photometry.schema.yaml
-- $ref: wcsinfo.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/lev3_prod.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/photometry.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
 - type: object
   properties:
     meta:

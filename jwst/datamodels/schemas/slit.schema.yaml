@@ -1,5 +1,5 @@
 allOf:
-- $ref: core.schema.yaml
-- $ref: slitdata.schema.yaml
-- $ref: int_times.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/slitdata.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/int_times.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

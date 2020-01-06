@@ -1,6 +1,6 @@
 title: Combined spectrum data model
 allOf:
-- $ref: core.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
 - type: object
   properties:
     spec_table:

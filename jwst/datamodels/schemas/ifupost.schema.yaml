@@ -31,8 +31,8 @@ definitions:
           The wavelength dependent distortion polynomial in X.
           The backward polynomial is assigned as inverse.
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_exptype.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
 - type: object
   properties:
     slice_0:

@@ -1,6 +1,6 @@
 title: Optional output for GLS ramp fitting
 allOf:
-- $ref: core.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
 - type: object
   properties:
     yint:

@@ -1,8 +1,8 @@
 allOf:
-- $ref: core.schema.yaml
-- $ref: bunit.schema.yaml
-- $ref: photometry.schema.yaml
-- $ref: wcsinfo.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/bunit.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/photometry.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
 - type: object
   properties:
     data:
@@ -29,7 +29,7 @@ allOf:
       title: Pixel area map array
       fits_hdu: AREA
       datatype: float32
-- $ref: variance.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/variance.schema
 - type: object
   properties:
     wavelength:
@@ -37,5 +37,5 @@ allOf:
       fits_hdu: WAVELENGTH
       datatype: float32
       default: 0.0
-- $ref: pathlosscorr.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/pathlosscorr.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

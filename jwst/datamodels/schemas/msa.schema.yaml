@@ -1,9 +1,9 @@
 title: NirSpec MSA reference file model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: keyword_exptype.schema.yaml
-- $ref: keyword_pexptype.schema.yaml
-- $ref: keyword_pdetector.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_exptype.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pexptype.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_pdetector.schema
 - type: object
   properties:
     Q1:

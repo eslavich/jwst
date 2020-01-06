@@ -1,6 +1,6 @@
 title: RSCD reference file model
 allOf:
-- $ref: referencefile.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
 - type: object
   properties:
     rscd_table:

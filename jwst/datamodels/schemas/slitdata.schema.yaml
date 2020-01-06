@@ -122,9 +122,9 @@ allOf:
       fits_hdu: AREA
       default: 0.0
       datatype: float32
-- $ref: variance.schema.yaml
-- $ref: pathlosscorr.schema.yaml
-- $ref: bunit.schema.yaml
-- $ref: photometry.schema.yaml
-- $ref: wcsinfo.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/variance.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/pathlosscorr.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/bunit.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/photometry.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

@@ -1,7 +1,7 @@
 allOf:
-- $ref: core.schema.yaml
-- $ref: bunit.schema.yaml
-- $ref: wcsinfo.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/bunit.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
 - type: object
   properties:
     meta:

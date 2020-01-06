@@ -1,6 +1,6 @@
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: subarray.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
 - type: object
   properties:
     quadrants:
@@ -44,5 +44,5 @@ allOf:
             - name: data
               shape: [130000]
               datatype: float32
-- $ref: dq_def.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/dq_def.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

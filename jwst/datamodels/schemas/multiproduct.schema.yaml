@@ -1,5 +1,5 @@
 allOf:
-- $ref: core.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/core.schema
 - type: object
   properties:
     products:
@@ -7,8 +7,8 @@ allOf:
       title: An array of DrizProducts
       items:
         allOf:
-        - $ref: photometry.schema.yaml
-        - $ref: wcsinfo.schema.yaml
+        - $ref: http://stsci.edu/schemas/jwst_datamodel/photometry.schema
+        - $ref: http://stsci.edu/schemas/jwst_datamodel/wcsinfo.schema
         - type: object
           properties:
             data:

@@ -1,10 +1,10 @@
 title: Linearity correction data model
 allOf:
-- $ref: referencefile.schema.yaml
-- $ref: subarray.schema.yaml
-- $ref: keyword_band.schema.yaml
-- $ref: keyword_filter.schema.yaml
-- $ref: keyword_gainfact.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/referencefile.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_band.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_filter.schema
+- $ref: http://stsci.edu/schemas/jwst_datamodel/keyword_gainfact.schema
 - type: object
   properties:
     coeffs:
@@ -18,5 +18,5 @@ allOf:
       fits_hdu: DQ
       default: 0
       datatype: uint32
-- $ref: dq_def.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/dq_def.schema
 $schema: http://stsci.edu/schemas/fits-schema/fits-schema

@@ -347,7 +347,7 @@ def test_model_with_nonstandard_primary_array():
     ROOT_DIR = os.path.join(os.path.dirname(__file__), 'data')
 
     class NonstandardPrimaryArrayModel(DataModel):
-        schema_url = os.path.join(
+        schema_uri = os.path.join(
             ROOT_DIR, "nonstandard_primary_array.schema.yaml")
 
         def __init__(self, init=None, wavelength=None, alpha=None, **kwargs):

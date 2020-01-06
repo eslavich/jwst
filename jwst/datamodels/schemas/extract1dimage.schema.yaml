@@ -1,6 +1,6 @@
 title: 1-D extraction regions array
 allOf:
-- $ref: subarray.schema.yaml
+- $ref: http://stsci.edu/schemas/jwst_datamodel/subarray.schema
 - type: object
   properties:
     data:
