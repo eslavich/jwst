@@ -165,7 +165,7 @@ class MultilineLogger(logging.getLoggerClass()):
     def log(self, level, msg, *args, **kwargs):
         if self.isEnabledFor(level):
             for line in msg.split('\n'):
-                self._log(level, line, args, **kwargs)
+                self._log(level, line, *args, **kwargs)
 
     debug = partialmethod(log, logging.DEBUG)
     info = partialmethod(log, logging.INFO)
