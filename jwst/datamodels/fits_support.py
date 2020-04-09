@@ -331,7 +331,7 @@ def _save_from_schema(hdulist, tree, schema):
     tree = treeutil.walk_and_modify(tree, convert_datetimes)
 
     validator = asdf_schema.get_validator(
-        schema, None, FITS_VALIDATORS, FITS_SCHEMA_URL_MAPPING)
+        schema, None, FITS_VALIDATORS, FITS_SCHEMA_URL_MAPPING, _visit_repeat_nodes=True)
 
     validator.hdulist = hdulist
     # TODO: Handle comment stack on per-hdu-basis
