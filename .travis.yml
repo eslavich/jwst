@@ -30,7 +30,7 @@ matrix:
 
 install:
   - pip install $PIP_DEPENDENCIES
-  - pip install git+https://github.com/eslavich/asdf.git
+  - pip install git+https://github.com/spacetelescope/asdf.git
 
 script:
   - $TEST_COMMAND
