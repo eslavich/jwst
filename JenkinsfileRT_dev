@@ -61,7 +61,7 @@ bc0.build_cmds = [
 ]
 bc0.build_cmds = PipInject(env.OVERRIDE_REQUIREMENTS) + bc0.build_cmds
 bc0.test_cmds = [
-    "pytest -r sxf --bigdata --slow \
+    "pytest -r sxf -n 30 --bigdata --slow \
     --basetemp=${pytest_basetemp} --junit-xml=results.xml --dist=loadscope \
     jwst/regtest/test_nircam_tsgrism.py::test_nircam_setpointing"
 ]
