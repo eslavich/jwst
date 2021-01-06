@@ -12,7 +12,7 @@ jobs:
       skip: ${{ steps.check-ci-skip.outputs.skip }}
     steps:
       - id: check-ci-skip
-        uses: spacetelescope/check-ci-skip-action@dev
+        uses: spacetelescope/check-skip-ci-action@dev
 
   tox:
     runs-on: ubuntu-latest
