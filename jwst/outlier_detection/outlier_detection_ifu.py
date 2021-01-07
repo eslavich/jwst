@@ -48,7 +48,7 @@ class OutlierDetectionIFU(OutlierDetection):
 
     default_suffix = 's3d'
 
-    def __init__(self, input_models, reffiles=None, **pars):
+    def __init__(self, input_models, **pars):
         """Initialize class for IFU data processing.
 
         Parameters
@@ -59,14 +59,8 @@ class OutlierDetectionIFU(OutlierDetection):
 
         drizzled_models : list of objects
             ModelContainer containing drizzled grouped input images
-
-        reffiles : dict of `jwst.datamodels.DataModel`
-            Dictionary of datamodels.  Keys are reffile_types.
-
-
         """
-        OutlierDetection.__init__(self, input_models,
-                                  reffiles=reffiles, **pars)
+        OutlierDetection.__init__(self, input_models, **pars)
 
     def _find_ifu_coverage(self):
         self.channels = []
@@ -196,9 +190,9 @@ class OutlierDetectionIFU(OutlierDetection):
         resampled_sci = [i.data for i in resampled_models]
         resampled_wht = [i.weightmap for i in resampled_models]
 
-        nlow = self.outlierpars.get('nlow', 0)
-        nhigh = self.outlierpars.get('nhigh', 0)
-        maskpt = self.outlierpars.get('maskpt', 0.7)
+        nlow = self.outlierpars['nlow']
+        nhigh = self.outlierpars['nhigh']
+        maskpt = self.outlierpars['maskpt']
         badmasks = []
         for w in resampled_wht:
             # Due to a bug in numpy.nanmean, need to check

@@ -32,6 +32,8 @@ class OutlierDetectionScaledStep(Step):
         backg = float(default=0.0)
         save_intermediate_results = boolean(default=False)
         good_bits = string(default="~DO_NOT_USE")  # DQ flags to allow
+        interp = string(default='poly5')
+        sinscl = float(default=1.0)
     """
 
     def process(self, input):
@@ -46,8 +48,6 @@ class OutlierDetectionScaledStep(Step):
                 return result
 
             self.input_models = input_models
-
-            reffiles = {}
 
             pars = {
                 'weight_type': self.weight_type,
@@ -71,7 +71,6 @@ class OutlierDetectionScaledStep(Step):
             # Set up outlier detection, then do detection
             step = outlier_detection_scaled.OutlierDetectionScaled(
                         self.input_models,
-                        reffiles=reffiles,
                         **pars)
             step.do_detection()
 
@@ -79,36 +78,3 @@ class OutlierDetectionScaledStep(Step):
 
             return self.input_models
 
-    def _build_reffile_container(self, reftype):
-        """Return a ModelContainer of reference file models.
-
-        Parameters
-        ----------
-        input_models: ModelContainer
-            the science data, ImageModels in a ModelContainer
-
-        reftype: string
-            type of reference file
-
-        Returns
-        -------
-        a ModelContainer with corresponding reference files for
-            each input model
-
-        """
-        reffile_to_model = {'gain': datamodels.GainModel,
-                            'readnoise': datamodels.ReadnoiseModel}
-        reffile_model = reffile_to_model[reftype]
-
-        reffiles = [self.input_models.meta.ref_file.instance[reftype]['name']]
-
-        self.log.debug("Using {} reffile(s):".format(reftype.upper()))
-        for r in set(reffiles):
-            self.log.debug("    {}".format(r))
-
-        # Use get_reference_file method to insure latest reference file
-        # always gets used...especially since only one name will ever be needed
-        ref_list = [reffile_model(self.get_reference_file(
-                                  self.input_models, reftype))]
-
-        return datamodels.ModelContainer(ref_list)

@@ -61,8 +61,8 @@ class OutlierDetectionStep(Step):
         resample_data = boolean(default=True)
         good_bits = string(default="~DO_NOT_USE")  # DQ flags to allow
         scale_detection = boolean(default=False)
-        search_output_file = boolean(default=False)
-        allowed_memory = float(default=None)  # Fraction of memory to use for the combined image.
+        interp = string(default='poly5')
+        sinscl = float(default=1.0)
     """
 
     def process(self, input_data):
@@ -105,7 +105,6 @@ class OutlierDetectionStep(Step):
                 'snr': self.snr,
                 'scale': self.scale,
                 'backg': self.backg,
-                'allowed_memory' : self.allowed_memory,
                 'save_intermediate_results': self.save_intermediate_results,
                 'resample_data': self.resample_data,
                 'good_bits': self.good_bits,
@@ -161,10 +160,9 @@ class OutlierDetectionStep(Step):
                 return self.input_models
 
             self.log.debug(f"Using {detection_step.__name__} class for outlier_detection")
-            reffiles = {}
 
             # Set up outlier detection, then do detection
-            step = detection_step(self.input_models, reffiles=reffiles, **pars)
+            step = detection_step(self.input_models, **pars)
             step.do_detection()
 
             state = 'COMPLETE'
@@ -177,48 +175,6 @@ class OutlierDetectionStep(Step):
                 self.input_models.meta.filetype = 'cosmic-ray flagged'
 
             return self.input_models
-
-    def _build_reffile_container(self, reftype):
-        """Return a ModelContainer of reference file models.
-
-        This method builds a ModelContainer object which contains all the
-        reference files needed for processing the inputs.
-
-        Parameters
-        ----------
-        input_models: ModelContainer
-            the science data, ImageModels in a ModelContainer
-
-        reftype: string
-            type of reference file
-
-        Returns
-        -------
-        ModelContainer with corresponding reference files for each input model
-
-        """
-        reffile_to_model = {'gain': datamodels.GainModel,
-                            'readnoise': datamodels.ReadnoiseModel}
-        if self.input_container:
-            reffiles = [self.get_reference_file(im, reftype)
-                        for im in self.input_models]
-            length = len(self.input_models)
-        else:
-            reffiles = [self.get_reference_file(self.input_models, reftype)]
-            length = 1
-
-        self.log.debug("Using {reftype.upper()} reffile(s):")
-        for r in set(reffiles):
-            self.log.debug("    {r}")
-
-        # Check if all the ref files are the same.  If so build it by reading
-        # the reference file just once.
-        if len(set(reffiles)) <= 1:
-            ref_list = [reffile_to_model.get(reftype)(reffiles[0])] * length
-        else:
-            ref_list = [reffile_to_model.get(reftype)(ref) for ref in reffiles]
-
-        return datamodels.ModelContainer(ref_list)
 
     def check_input(self):
         """Use this method to determine whether input is valid or not."""

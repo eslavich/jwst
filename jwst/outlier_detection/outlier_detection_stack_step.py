@@ -42,6 +42,8 @@ class OutlierDetectionStackStep(Step):
         save_intermediate_results = boolean(default=False)
         resample_data = boolean(default=False)
         good_bits = string(default="~DO_NOT_USE")  # DQ flags to allow
+        interp = string(default='poly5')
+        sinscl = float(default=1.0)
     """
 
     def process(self, input):
@@ -59,7 +61,6 @@ class OutlierDetectionStackStep(Step):
             self.log.info("Performing outlier detection on stack of \
                           {} inputs".format(len(input_models)))
             self.input_models = input_models
-            reffiles = {}
 
             pars = {
                 'weight_type': self.weight_type,
@@ -80,7 +81,6 @@ class OutlierDetectionStackStep(Step):
 
             # Set up outlier detection, then do detection
             step = outlier_detection.OutlierDetection(self.input_models,
-                                                      reffiles=reffiles,
                                                       **pars)
             step.do_detection()
 
@@ -88,44 +88,3 @@ class OutlierDetectionStackStep(Step):
                 model.meta.cal_step.outlier_detection = 'COMPLETE'
 
             return self.input_models
-
-    def _build_reffile_container(self, reftype):
-        """Return a ModelContainer of reference file models.
-
-        Parameters
-        ----------
-        input_models: ModelContainer
-            the science data, ImageModels in a ModelContainer
-
-        reftype: string
-            type of reference file
-
-        Returns
-        -------
-        a ModelContainer with corresponding reference files for
-        each input model
-
-        """
-        reffile_to_model = {'gain': datamodels.GainModel,
-                            'readnoise': datamodels.ReadnoiseModel}
-
-        reffiles = [im.meta.ref_file.instance[reftype]['name']
-                    for im in self.input_models]
-        self.log.debug("Using {} reffile(s):".format(reftype.upper()))
-        for r in set(reffiles):
-            self.log.debug("    {}".format(r))
-
-        # Check if all the ref files are the same.  If so build it by reading
-        # the reference file just once.
-        if len(set(reffiles)) <= 1:
-            length = len(self.input_models)
-            # This call to reference_uri_to_cache_path expects a reference
-            # filename as a URI(crds://), not a file path(/path/to/file)
-            ref_list = [reffile_to_model[reftype](
-                        self.reference_uri_to_cache_path(reffiles[0])
-                        )] * length
-        else:
-            ref_list = [reffile_to_model[reftype](
-                        self.get_reference_file(im, reftype))
-                        for im in self.input_models]
-        return datamodels.ModelContainer(ref_list)

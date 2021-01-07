@@ -40,7 +40,7 @@ class OutlierDetectionScaled(OutlierDetection):
 
     """
 
-    def __init__(self, input_models, reffiles=None, **pars):
+    def __init__(self, input_models, **pars):
         """Initialize class with input_models.
 
         Parameters
@@ -48,12 +48,8 @@ class OutlierDetectionScaled(OutlierDetection):
         input_models : list of DataModels, str
             list of data models as ModelContainer or ASN file,
             one data model for each input image
-
-        reffiles : dict of `jwst.datamodels.DataModel`
-            Dictionary of datamodels.  Keys are reffile_types.
-
         """
-        super().__init__(self, input_models, reffiles=reffiles, **pars)
+        super().__init__(self, input_models, **pars)
 
     def do_detection(self):
         """Flag outlier pixels in DQ of input images."""
